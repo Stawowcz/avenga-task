@@ -1,8 +1,8 @@
-# 🧪 Playwright Test Automation
+# Playwright Test Automation
 
 Automated end-to-end tests using [Playwright](https://playwright.dev/) with TypeScript, soft assertions, and environment-based configuration.
 
-## 📦 Installation
+## Installation
 
 1. Clone the repository:
 
@@ -27,7 +27,7 @@ SAUCE_DEMO_STANDARD_USER=standard_user
 SAUCE_DEMO_PASSWORD=secret_sauce
 ```
 
-## 🚀 Running Tests
+## Running Tests
 
 To run all tests:
 
@@ -49,7 +49,7 @@ npm run test:firefox
 npm run test:safari
 ```
 
-## 📊 Test Report
+## Test Report
 
 To view the HTML report after running tests:
 
