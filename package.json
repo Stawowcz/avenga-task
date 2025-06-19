@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test-debug": "playwright test --debug",
+    "test-debug:chrome": "playwright test --debug --project=Chromium",
     "report": "npx playwright show-report",
     "test:safari": "npx playwright test --project=Safari",
     "test:firefox": "npx playwright test --project=Firefox",
