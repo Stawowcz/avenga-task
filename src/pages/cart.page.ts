@@ -1,4 +1,3 @@
-import { Locator } from "@playwright/test";
 import { BasePage } from "./base.page";
 import { ProductsCartIds } from "../types/productsPage.enums";
 

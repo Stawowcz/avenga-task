@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { LoginPage } from "../pages/login.page";
-import { ProductsPage } from "../pages/product.page"; // dopasuj ścieżkę do Twojej struktury
+import { ProductsPage } from "../pages/product.page";
 import { ProductsPageTexts } from "../types/productsPage.enums";
 import { LoginPageTexts } from "../types/loginPage.enums";
 
