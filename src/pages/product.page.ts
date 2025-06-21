@@ -1,6 +1,6 @@
 import { Locator } from "@playwright/test";
 import { BasePage } from "./base.page";
-import { ProductsCartIds } from "../types/productsPage.enums";
+import { ProductsCartIds, ProductsNames } from "../types/productsPage.enums";
 
 export class ProductsPage extends BasePage {
   public readonly title: Locator = this.page.getByTestId("title");
@@ -86,12 +86,45 @@ export class ProductsPage extends BasePage {
     await btn.click();
   }
 
-  public async getProductPriceByXPath(productName: string): Promise<number> {
-    const xpath = `//div[contains(@class,"inventory_item") and .//div[contains(@class,"inventory_item_name") and normalize-space(text())="${productName}"]]//div[contains(@class,"inventory_item_price")]`;
-    const locator = this.page.locator(`xpath=${xpath}`);
-    await locator.waitFor({ state: "visible", timeout: 5000 });
-    const raw = await locator.textContent();
-    return parseFloat(raw?.trim().replace("$", "") ?? "0");
+  //working correct
+  // public async getProductPriceFromInventory(productName: string): Promise<number> {
+  //   const xpath = `//div[contains(@class,"inventory_item") and .//div[contains(@class,"inventory_item_name") and normalize-space(text())="${productName}"]]//div[contains(@class,"inventory_item_price")]`;
+  //   const locator = this.page.locator(`xpath=${xpath}`);
+  //   await locator.waitFor({ state: "visible", timeout: 5000 });
+  //   const raw = await locator.textContent();
+  //   return parseFloat(raw?.trim().replace("$", "") ?? "0");
+  // }
+
+  //working correct
+  // public async getProductPriceFromInventory(productName: string): Promise<number> {
+  //   const productItem = this.page
+  //     .getByTestId("inventory-item-name")
+  //     .filter({ hasText: productName })
+  //     .locator("..")
+  //     .locator("..")
+  //     .locator("..");
+
+  //   const priceLocator = productItem.getByTestId("inventory-item-price");
+  //   await priceLocator.waitFor({ state: "visible", timeout: 5000 });
+  //   const raw = await priceLocator.textContent();
+  //   const price = parseFloat(raw?.replace("$", "").trim() ?? "0");
+  //   return price;
+  // }
+
+  //imo the best working as well
+  public async getProductPriceFromInventory(
+    productName: string,
+  ): Promise<number> {
+    const productItem = this.page.locator(".inventory_item", {
+      has: this.page
+        .getByTestId("inventory-item-name")
+        .filter({ hasText: productName }),
+    });
+    const priceLocator = productItem.getByTestId("inventory-item-price");
+    await priceLocator.waitFor({ state: "visible", timeout: 5000 });
+    const raw = await priceLocator.textContent();
+    const price = parseFloat(raw?.replace("$", "").trim() ?? "0");
+    return price;
   }
 
   public async openMenu(): Promise<void> {

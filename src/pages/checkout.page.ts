@@ -14,6 +14,8 @@ export class CheckoutPage extends BasePage {
   public readonly header = this.page.getByTestId("title");
   public readonly summarySubtotalLabel: Locator =
     this.page.getByTestId("subtotal-label");
+  public readonly summaryTaxLabel = this.page.getByTestId("tax-label");
+  public readonly summaryTotalLabel = this.page.getByTestId("total-label");
 
   public async getOverviewItemsCount(): Promise<number> {
     return this.page.getByTestId("inventory-item").count();
@@ -61,9 +63,21 @@ export class CheckoutPage extends BasePage {
     await this.cancelButton.click();
   }
 
-  public async getSubtotal(): Promise<number> {
+  public async getSubtotalPrice(): Promise<number> {
     await this.summarySubtotalLabel.waitFor({ state: "visible" });
     const text = await this.summarySubtotalLabel.textContent();
     return parseFloat(text?.replace("Item total: $", "").trim() ?? "0");
+  }
+
+  public async getTax(): Promise<number> {
+    await this.summaryTaxLabel.waitFor({ state: "visible" });
+    const text = await this.summaryTaxLabel.textContent();
+    return parseFloat(text?.replace("Tax: $", "").trim() ?? "0");
+  }
+
+  public async getTotalPrice(): Promise<number> {
+    await this.summaryTotalLabel.waitFor({ state: "visible" });
+    const text = await this.summaryTotalLabel.textContent();
+    return parseFloat(text?.replace("Total: $", "").trim() ?? "0");
   }
 }
