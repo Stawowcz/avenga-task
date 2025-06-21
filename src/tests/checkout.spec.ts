@@ -11,8 +11,12 @@ import { PricingUtils } from "../utils/pricing.utils";
 test.describe("Checkout flow – standard_user", () => {
   test.beforeEach(async ({ page, loginPage, productsPage }) => {
     await loginPage.goto(process.env.SAUCE_DEMO_BASEURL!);
-    await loginPage.fillUserNameField(process.env.SAUCE_DEMO_STANDARD_USER!);
-    await loginPage.fillPasswordField(process.env.SAUCE_DEMO_PASSWORD!);
+    await loginPage.fillUserNameField(
+      process.env.SAUCE_DEMO_STANDARD_USER ?? "<unknown>",
+    );
+    await loginPage.fillPasswordField(
+      process.env.SAUCE_DEMO_PASSWORD ?? "<unknown>",
+    );
     await loginPage.clickOnLoginButton();
 
     await expect.soft(page).toHaveURL(/.*inventory/);
@@ -50,6 +54,11 @@ test.describe("Checkout flow – standard_user", () => {
       .toHaveText(CartPageTexts.secondaryHeader);
     expect.soft(await cartPage.getCartItemsCount()).toBe(2);
 
+    const cartQuantities = await cartPage.itemQuantity.all();
+    for (const quantity of cartQuantities) {
+      await expect.soft(quantity).toHaveText("1");
+    }
+
     const cartPriceBP = await cartPage.getProductPriceFromCart(
       ProductsNames.SauceLabsBackpack,
     );
@@ -75,6 +84,21 @@ test.describe("Checkout flow – standard_user", () => {
     await expect
       .soft(checkoutPage.header)
       .toHaveText(CheckoutPageTexts.secondaryHeader2ndStep);
+
+    const overviewQuantities = await checkoutPage.itemQuantity.all();
+    for (const quantity of overviewQuantities) {
+      await expect.soft(quantity).toHaveText("1");
+    }
+
+    const overviewPriceBP = await checkoutPage.getProductPriceFromOverview(
+      ProductsNames.SauceLabsBackpack,
+    );
+    const overviewPriceBL = await checkoutPage.getProductPriceFromOverview(
+      ProductsNames.SauceLabsBikeLight,
+    );
+
+    expect.soft(overviewPriceBP).toBeCloseTo(inventoryPriceBP, 2);
+    expect.soft(overviewPriceBL).toBeCloseTo(inventoryPriceBL, 2);
 
     const subtotalPrice = await checkoutPage.getSubtotalPrice();
     const displayedTax = await checkoutPage.getTax();
@@ -123,6 +147,11 @@ test.describe("Checkout flow – standard_user", () => {
       .toHaveText(CartPageTexts.secondaryHeader);
     expect.soft(await cartPage.getCartItemsCount()).toBe(2);
 
+    const cartQuantities = await cartPage.itemQuantity.all();
+    for (const quantity of cartQuantities) {
+      await expect.soft(quantity).toHaveText("1");
+    }
+
     const cartPriceBP = await cartPage.getProductPriceFromCart(
       ProductsNames.SauceLabsBackpack,
     );
@@ -149,6 +178,11 @@ test.describe("Checkout flow – standard_user", () => {
       .soft(cartPage.header)
       .toHaveText(CartPageTexts.secondaryHeader);
 
+    const updatedCartQuantities = await cartPage.itemQuantity.all();
+    for (const quantity of updatedCartQuantities) {
+      await expect.soft(quantity).toHaveText("1");
+    }
+
     await cartPage.clickCheckout();
 
     await expect.soft(page).toHaveURL(/.*checkout-step-one/);
@@ -164,6 +198,18 @@ test.describe("Checkout flow – standard_user", () => {
     await expect
       .soft(checkoutPage.header)
       .toHaveText(CheckoutPageTexts.secondaryHeader2ndStep);
+
+    const overviewQuantities = await checkoutPage.itemQuantity.all();
+
+    for (const quantity of overviewQuantities) {
+      await expect.soft(quantity).toHaveText("1");
+    }
+
+    const overviewPriceBP = await checkoutPage.getProductPriceFromOverview(
+      ProductsNames.SauceLabsBackpack,
+    );
+
+    expect.soft(overviewPriceBP).toBeCloseTo(inventoryPriceBP, 2);
 
     const subtotalPrice = await checkoutPage.getSubtotalPrice();
     const displayedTax = await checkoutPage.getTax();
@@ -210,6 +256,11 @@ test.describe("Checkout flow – standard_user", () => {
 
     await expect.soft(page).toHaveURL(/.*cart/);
     expect.soft(await cartPage.getCartItemsCount()).toBe(2);
+
+    const cartQuantities = await cartPage.itemQuantity.all();
+    for (const quantity of cartQuantities) {
+      await expect.soft(quantity).toHaveText("1");
+    }
     await expect
       .soft(cartPage.header)
       .toHaveText(CartPageTexts.secondaryHeader);
@@ -238,6 +289,9 @@ test.describe("Checkout flow – standard_user", () => {
       .soft(cartPage.header)
       .toHaveText(CartPageTexts.secondaryHeader);
     expect.soft(await cartPage.getCartItemsCount()).toBe(2);
+    for (const quantity of cartQuantities) {
+      await expect.soft(quantity).toHaveText("1");
+    }
 
     await cartPage.clickCheckout();
 
@@ -254,6 +308,22 @@ test.describe("Checkout flow – standard_user", () => {
     await expect
       .soft(checkoutPage.header)
       .toHaveText(CheckoutPageTexts.secondaryHeader2ndStep);
+
+    const overviewQuantities = await checkoutPage.itemQuantity.all();
+
+    for (const quantity of overviewQuantities) {
+      await expect.soft(quantity).toHaveText("1");
+    }
+
+    const overviewPriceBP = await checkoutPage.getProductPriceFromOverview(
+      ProductsNames.SauceLabsBackpack,
+    );
+    const overviewPriceBL = await checkoutPage.getProductPriceFromOverview(
+      ProductsNames.SauceLabsBikeLight,
+    );
+
+    expect.soft(overviewPriceBP).toBeCloseTo(inventoryPriceBP, 2);
+    expect.soft(overviewPriceBL).toBeCloseTo(inventoryPriceBL, 2);
 
     const subtotalPrice = await checkoutPage.getSubtotalPrice();
     const displayedTax = await checkoutPage.getTax();
@@ -291,6 +361,12 @@ test.describe("Checkout flow – standard_user", () => {
     await productsPage.clickOnCartBasket();
 
     await expect.soft(page).toHaveURL(/.*cart/);
+
+    const cartQuantities = await cartPage.itemQuantity.all();
+
+    for (const quantity of cartQuantities) {
+      await expect.soft(quantity).toHaveText("1");
+    }
     await expect
       .soft(cartPage.header)
       .toHaveText(CartPageTexts.secondaryHeader);
@@ -306,6 +382,12 @@ test.describe("Checkout flow – standard_user", () => {
     await checkoutPage.clickContinue();
 
     await expect.soft(page).toHaveURL(/.*checkout-step-two/);
+
+    const overviewQuantities = await checkoutPage.itemQuantity.all();
+
+    for (const quantity of overviewQuantities) {
+      await expect.soft(quantity).toHaveText("1");
+    }
     await expect
       .soft(checkoutPage.header)
       .toHaveText(CheckoutPageTexts.secondaryHeader2ndStep);
@@ -339,6 +421,12 @@ test.describe("Checkout flow – standard_user", () => {
     await productsPage.clickOnCartBasket();
 
     await expect.soft(page).toHaveURL(/.*cart/);
+
+    const cartQuantities = await cartPage.itemQuantity.all();
+
+    for (const quantity of cartQuantities) {
+      await expect.soft(quantity).toHaveText("1");
+    }
     await expect
       .soft(cartPage.header)
       .toHaveText(CartPageTexts.secondaryHeader);
@@ -363,6 +451,12 @@ test.describe("Checkout flow – standard_user", () => {
     await productsPage.clickOnCartBasket();
 
     await expect.soft(page).toHaveURL(/.*cart/);
+
+    const updatedCartQuantities = await cartPage.itemQuantity.all();
+
+    for (const quantity of updatedCartQuantities) {
+      await expect.soft(quantity).toHaveText("1");
+    }
     await expect
       .soft(cartPage.header)
       .toHaveText(CartPageTexts.secondaryHeader);
@@ -383,6 +477,18 @@ test.describe("Checkout flow – standard_user", () => {
       .soft(checkoutPage.header)
       .toHaveText(CheckoutPageTexts.secondaryHeader2ndStep);
 
+    const overviewQuantities = await checkoutPage.itemQuantity.all();
+
+    for (const quantity of overviewQuantities) {
+      await expect.soft(quantity).toHaveText("1");
+    }
+
+    const overviewPriceBL = await checkoutPage.getProductPriceFromOverview(
+      ProductsNames.SauceLabsBikeLight,
+    );
+
+    expect.soft(overviewPriceBL).toBeCloseTo(inventoryPriceBL, 2);
+
     const subtotalPrice = await checkoutPage.getSubtotalPrice();
     const displayedTax = await checkoutPage.getTax();
     const displayedTotal = await checkoutPage.getTotalPrice();
@@ -396,6 +502,102 @@ test.describe("Checkout flow – standard_user", () => {
     expect.soft(await checkoutPage.getOverviewItemsCount()).toBe(1);
 
     await checkoutPage.clickFinish();
+
+    await expect
+      .soft(checkoutPage.completeHeader)
+      .toContainText(CheckoutPageTexts.successThx);
+    await expect.soft(page).toHaveURL(/.*checkout-complete/);
+  });
+
+  test("should add 2 items from products details pages and complete checkout successfully", async ({
+    page,
+    productsPage,
+    cartPage,
+    checkoutPage,
+  }) => {
+    await productsPage.openProductByName(ProductsNames.SauceLabsBackpack);
+    await productsPage.addToCartFromProjectDetails();
+    const inventoryPriceBP = await productsPage.getProductPriceFromInventory(
+      ProductsNames.SauceLabsBackpack,
+    );
+    await productsPage.clickBackToProducts();
+    await productsPage.openProductByName(ProductsNames.SauceLabsBikeLight);
+    await productsPage.addToCartFromProjectDetails();
+    const inventoryPriceBL = await productsPage.getProductPriceFromInventory(
+      ProductsNames.SauceLabsBikeLight,
+    );
+    const expectedTotal = inventoryPriceBP + inventoryPriceBL;
+    await productsPage.clickOnCartBasket();
+
+    await expect.soft(page).toHaveURL(/.*cart/);
+    await expect
+      .soft(cartPage.header)
+      .toHaveText(CartPageTexts.secondaryHeader);
+    expect.soft(await cartPage.getCartItemsCount()).toBe(2);
+
+    const cartQuantities = await cartPage.itemQuantity.all();
+
+    for (const quantity of cartQuantities) {
+      await expect.soft(quantity).toHaveText("1");
+    }
+
+    const cartPriceBP = await cartPage.getProductPriceFromCart(
+      ProductsNames.SauceLabsBackpack,
+    );
+    const cartPriceBL = await cartPage.getProductPriceFromCart(
+      ProductsNames.SauceLabsBikeLight,
+    );
+
+    expect.soft(cartPriceBP).toBeCloseTo(inventoryPriceBP, 2);
+    expect.soft(cartPriceBL).toBeCloseTo(inventoryPriceBL, 2);
+
+    await cartPage.clickCheckout();
+
+    await expect.soft(page).toHaveURL(/.*checkout-step-one/);
+    await expect
+      .soft(checkoutPage.header)
+      .toHaveText(CheckoutPageTexts.secondaryHeader);
+
+    const formData: CheckoutFormData = generateCheckoutData();
+    await checkoutPage.fillInfo(formData);
+    await checkoutPage.clickContinue();
+
+    await expect.soft(page).toHaveURL(/.*checkout-step-two/);
+    await expect
+      .soft(checkoutPage.header)
+      .toHaveText(CheckoutPageTexts.secondaryHeader2ndStep);
+
+    const overviewQuantities = await checkoutPage.itemQuantity.all();
+
+    for (const quantity of overviewQuantities) {
+      await expect.soft(quantity).toHaveText("1");
+    }
+
+    const overviewPriceBP = await checkoutPage.getProductPriceFromOverview(
+      ProductsNames.SauceLabsBackpack,
+    );
+    const overviewPriceBL = await checkoutPage.getProductPriceFromOverview(
+      ProductsNames.SauceLabsBikeLight,
+    );
+
+    expect.soft(overviewPriceBP).toBeCloseTo(inventoryPriceBP, 2);
+    expect.soft(overviewPriceBL).toBeCloseTo(inventoryPriceBL, 2);
+
+    const subtotalPrice = await checkoutPage.getSubtotalPrice();
+    const displayedTax = await checkoutPage.getTax();
+    const displayedTotal = await checkoutPage.getTotalPrice();
+
+    const expectedTax = PricingUtils.calculateTax(expectedTotal);
+    const expectedTotalWithTax =
+      PricingUtils.calculateTotalWithTax(expectedTotal);
+
+    expect.soft(subtotalPrice).toBeCloseTo(expectedTotal, 2);
+    expect.soft(displayedTax).toBeCloseTo(expectedTax, 2);
+    expect.soft(displayedTotal).toBeCloseTo(expectedTotalWithTax, 2);
+    expect.soft(await checkoutPage.getOverviewItemsCount()).toBe(2);
+
+    await checkoutPage.clickFinish();
+    await checkoutPage.completeHeader.waitFor({ state: "visible" });
 
     await expect
       .soft(checkoutPage.completeHeader)

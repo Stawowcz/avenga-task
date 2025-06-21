@@ -1,4 +1,4 @@
-All tests where framework found a bug i added adnotations in the title of the tests
-these test are not failing because of problem in test frameworks they just fail because there is bug in application
-there should be 23/41 passed tests
-there should be 18/41 failures
+All tests where framework found a bug I added adnotations in the title of the tests
+these test are not failing because of problem in test frameworks they just fail because there are bugs in application
+there should be 25/41 passed tests
+there should be 21/41 failures

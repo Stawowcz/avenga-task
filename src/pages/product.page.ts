@@ -17,6 +17,9 @@ export class ProductsPage extends BasePage {
     "shopping-cart-badge",
   );
 
+  public readonly addToCardButton: Locator =
+    this.page.getByTestId("add-to-cart");
+
   public readonly shopingCartContainer: Locator = this.page.locator(
     "#shopping_cart_container",
   );
@@ -41,16 +44,19 @@ export class ProductsPage extends BasePage {
     return this.page.getByTestId(`remove-${productId}`);
   }
 
-  public getAttToCartButton(productId: ProductsCartIds): Locator {
-    return this.page.getByTestId(`add-to-cart-${productId}`);
-  }
-
   public getCartBadge(): Locator {
     return this.page.getByTestId("shopping-cart-badge");
   }
 
   public readonly sortDropdown: Locator = this.page.getByTestId(
     "product-sort-container",
+  );
+
+  public readonly backToProductsButton =
+    this.page.getByTestId("back-to-products");
+
+  public getAllProductDescription: Locator = this.page.getByTestId(
+    "inventory-item-desc",
   );
 
   public getAllProductTitles(): Locator {
@@ -79,6 +85,12 @@ export class ProductsPage extends BasePage {
     await btn.click();
   }
 
+  public async addToCartFromProjectDetails(): Promise<void> {
+    await this.addToCardButton.waitFor({ state: "visible" });
+    await this.addToCardButton.scrollIntoViewIfNeeded();
+    await this.addToCardButton.click();
+  }
+
   public async removeProductToCart(productId: ProductsCartIds): Promise<void> {
     const btn = this.getRemoveFromCartButton(productId);
     await btn.waitFor({ state: "visible" });
@@ -86,44 +98,23 @@ export class ProductsPage extends BasePage {
     await btn.click();
   }
 
-  //working correct
-  // public async getProductPriceFromInventory(productName: string): Promise<number> {
-  //   const xpath = `//div[contains(@class,"inventory_item") and .//div[contains(@class,"inventory_item_name") and normalize-space(text())="${productName}"]]//div[contains(@class,"inventory_item_price")]`;
-  //   const locator = this.page.locator(`xpath=${xpath}`);
-  //   await locator.waitFor({ state: "visible", timeout: 5000 });
-  //   const raw = await locator.textContent();
-  //   return parseFloat(raw?.trim().replace("$", "") ?? "0");
-  // }
-
-  //working correct
-  // public async getProductPriceFromInventory(productName: string): Promise<number> {
-  //   const productItem = this.page
-  //     .getByTestId("inventory-item-name")
-  //     .filter({ hasText: productName })
-  //     .locator("..")
-  //     .locator("..")
-  //     .locator("..");
-
-  //   const priceLocator = productItem.getByTestId("inventory-item-price");
-  //   await priceLocator.waitFor({ state: "visible", timeout: 5000 });
-  //   const raw = await priceLocator.textContent();
-  //   const price = parseFloat(raw?.replace("$", "").trim() ?? "0");
-  //   return price;
-  // }
-
-  //imo the best working as well
   public async getProductPriceFromInventory(
     productName: string,
   ): Promise<number> {
-    const productItem = this.page.locator(".inventory_item", {
+    const productItem = this.page.getByTestId("inventory-item").filter({
       has: this.page
         .getByTestId("inventory-item-name")
         .filter({ hasText: productName }),
     });
+
     const priceLocator = productItem.getByTestId("inventory-item-price");
     await priceLocator.waitFor({ state: "visible", timeout: 5000 });
+
     const raw = await priceLocator.textContent();
-    const price = parseFloat(raw?.replace("$", "").trim() ?? "0");
+    if (!raw) {
+      throw new Error("Total price text is missing");
+    }
+    const price = parseFloat(raw?.replace("$", "").trim());
     return price;
   }
 
@@ -149,5 +140,25 @@ export class ProductsPage extends BasePage {
     await this.resetAppButton.waitFor({ state: "visible" });
     await this.resetAppButton.scrollIntoViewIfNeeded();
     await this.resetAppButton.click();
+  }
+
+  public getProductNameLocatorByName(productName: ProductsNames): Locator {
+    return this.page
+      .getByTestId("inventory-item-name")
+      .filter({ hasText: productName });
+  }
+
+  public async openProductByName(productName: ProductsNames): Promise<void> {
+    const productNameLocator = this.getProductNameLocatorByName(productName);
+
+    await productNameLocator.waitFor({ state: "visible" });
+    await productNameLocator.scrollIntoViewIfNeeded();
+    await productNameLocator.click();
+  }
+
+  public async clickBackToProducts(): Promise<void> {
+    await this.backToProductsButton.waitFor({ state: "visible" });
+    await this.backToProductsButton.scrollIntoViewIfNeeded();
+    await this.backToProductsButton.click();
   }
 }

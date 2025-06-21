@@ -12,7 +12,7 @@ test.describe("Verify proper immage loading for different users", () => {
     loginPage,
     productsPage,
   }) => {
-    await loginPage.goto(process.env.SAUCE_DEMO_BASEURL ?? "");
+    await loginPage.goto(process.env.SAUCE_DEMO_BASEURL ?? "<unknown>");
     await loginPage.fillUserNameField(process.env.SAUCE_DEMO_STANDARD_USER!);
     await loginPage.fillPasswordField(process.env.SAUCE_DEMO_PASSWORD!);
     await loginPage.clickOnLoginButton();
@@ -50,11 +50,13 @@ test.describe("Verify proper immage loading for different users", () => {
     loginPage,
     productsPage,
   }) => {
-    await loginPage.goto(process.env.SAUCE_DEMO_BASEURL ?? "");
+    await loginPage.goto(process.env.SAUCE_DEMO_BASEURL ?? "<unknown>");
     await loginPage.fillUserNameField(
-      process.env.SAUCE_DEMO_PROBLEM_USER ?? "",
+      process.env.SAUCE_DEMO_PROBLEM_USER ?? "<unknown>",
     );
-    await loginPage.fillPasswordField(process.env.SAUCE_DEMO_PASSWORD ?? "");
+    await loginPage.fillPasswordField(
+      process.env.SAUCE_DEMO_PASSWORD ?? "<unknown>",
+    );
     await loginPage.clickOnLoginButton();
 
     await expect.soft(page).toHaveURL(/.*inventory/);
@@ -90,7 +92,7 @@ test.describe("Verify proper immage loading for different users", () => {
     loginPage,
     productsPage,
   }) => {
-    await loginPage.goto(process.env.SAUCE_DEMO_BASEURL ?? "");
+    await loginPage.goto(process.env.SAUCE_DEMO_BASEURL ?? "<unknown>");
     await loginPage.fillUserNameField(process.env.SAUCE_DEMO_VISUAL_USER!);
     await loginPage.fillPasswordField(process.env.SAUCE_DEMO_PASSWORD!);
     await loginPage.clickOnLoginButton();

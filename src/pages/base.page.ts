@@ -1,7 +1,6 @@
 import { Page } from "@playwright/test";
 
 export type GotoOptions = {
-  referer?: string;
   timeout?: number;
   waitUntil?: "load" | "domcontentloaded" | "networkidle" | "commit";
 };

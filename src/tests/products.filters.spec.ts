@@ -5,11 +5,13 @@ import { ProductsPageTexts } from "../types/productsPage.enums";
 test.describe("Verify filters for different users", () => {
   test.describe("should verify filters by standard user", () => {
     test.beforeEach(async ({ page, loginPage, productsPage }) => {
-      await loginPage.goto(process.env.SAUCE_DEMO_BASEURL ?? "");
+      await loginPage.goto(process.env.SAUCE_DEMO_BASEURL ?? "<unknown>");
       await loginPage.fillUserNameField(
-        process.env.SAUCE_DEMO_STANDARD_USER ?? "",
+        process.env.SAUCE_DEMO_STANDARD_USER ?? "<unknown>",
       );
-      await loginPage.fillPasswordField(process.env.SAUCE_DEMO_PASSWORD ?? "");
+      await loginPage.fillPasswordField(
+        process.env.SAUCE_DEMO_PASSWORD ?? "<unknown>",
+      );
       await loginPage.clickOnLoginButton();
 
       await expect.soft(page).toHaveURL(/.*inventory/);
@@ -54,11 +56,13 @@ test.describe("Verify filters for different users", () => {
 
   test.describe("should verify filters by problem user", () => {
     test.beforeEach(async ({ page, loginPage, productsPage }) => {
-      await loginPage.goto(process.env.SAUCE_DEMO_BASEURL ?? "");
+      await loginPage.goto(process.env.SAUCE_DEMO_BASEURL ?? "<unknown>");
       await loginPage.fillUserNameField(
-        process.env.SAUCE_DEMO_PROBLEM_USER ?? "",
+        process.env.SAUCE_DEMO_PROBLEM_USER ?? "<unknown>",
       );
-      await loginPage.fillPasswordField(process.env.SAUCE_DEMO_PASSWORD ?? "");
+      await loginPage.fillPasswordField(
+        process.env.SAUCE_DEMO_PASSWORD ?? "<unknown>",
+      );
       await loginPage.clickOnLoginButton();
 
       await expect.soft(page).toHaveURL(/.*inventory/);
@@ -103,11 +107,13 @@ test.describe("Verify filters for different users", () => {
 
   test.describe("should verify filters by error user", () => {
     test.beforeEach(async ({ page, loginPage, productsPage }) => {
-      await loginPage.goto(process.env.SAUCE_DEMO_BASEURL ?? "");
+      await loginPage.goto(process.env.SAUCE_DEMO_BASEURL ?? "<unknown>");
       await loginPage.fillUserNameField(
-        process.env.SAUCE_DEMO_ERROR_USER ?? "",
+        process.env.SAUCE_DEMO_ERROR_USER ?? "<unknown>",
       );
-      await loginPage.fillPasswordField(process.env.SAUCE_DEMO_PASSWORD ?? "");
+      await loginPage.fillPasswordField(
+        process.env.SAUCE_DEMO_PASSWORD ?? "<unknown>",
+      );
       await loginPage.clickOnLoginButton();
 
       await expect.soft(page).toHaveURL(/.*inventory/);
@@ -152,11 +158,13 @@ test.describe("Verify filters for different users", () => {
 
   test.describe("should verify filters by visual user", () => {
     test.beforeEach(async ({ page, loginPage, productsPage }) => {
-      await loginPage.goto(process.env.SAUCE_DEMO_BASEURL ?? "");
+      await loginPage.goto(process.env.SAUCE_DEMO_BASEURL ?? "<unknown>");
       await loginPage.fillUserNameField(
-        process.env.SAUCE_DEMO_VISUAL_USER ?? "",
+        process.env.SAUCE_DEMO_VISUAL_USER ?? "<unknown>",
       );
-      await loginPage.fillPasswordField(process.env.SAUCE_DEMO_PASSWORD ?? "");
+      await loginPage.fillPasswordField(
+        process.env.SAUCE_DEMO_PASSWORD ?? "<unknown>",
+      );
       await loginPage.clickOnLoginButton();
 
       await expect.soft(page).toHaveURL(/.*inventory/);

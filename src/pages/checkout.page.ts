@@ -16,6 +16,7 @@ export class CheckoutPage extends BasePage {
     this.page.getByTestId("subtotal-label");
   public readonly summaryTaxLabel = this.page.getByTestId("tax-label");
   public readonly summaryTotalLabel = this.page.getByTestId("total-label");
+  public readonly itemQuantity = this.page.getByTestId("item-quantity");
 
   public async getOverviewItemsCount(): Promise<number> {
     return this.page.getByTestId("inventory-item").count();
@@ -66,18 +67,46 @@ export class CheckoutPage extends BasePage {
   public async getSubtotalPrice(): Promise<number> {
     await this.summarySubtotalLabel.waitFor({ state: "visible" });
     const text = await this.summarySubtotalLabel.textContent();
-    return parseFloat(text?.replace("Item total: $", "").trim() ?? "0");
+    if (!text) {
+      throw new Error("Total price text is missing");
+    }
+    return parseFloat(text?.replace("Item total: $", "").trim());
   }
 
   public async getTax(): Promise<number> {
     await this.summaryTaxLabel.waitFor({ state: "visible" });
     const text = await this.summaryTaxLabel.textContent();
-    return parseFloat(text?.replace("Tax: $", "").trim() ?? "0");
+    if (!text) {
+      throw new Error("Total price text is missing");
+    }
+    return parseFloat(text?.replace("Tax: $", "").trim());
   }
 
   public async getTotalPrice(): Promise<number> {
     await this.summaryTotalLabel.waitFor({ state: "visible" });
     const text = await this.summaryTotalLabel.textContent();
-    return parseFloat(text?.replace("Total: $", "").trim() ?? "0");
+    if (!text) {
+      throw new Error("Total price text is missing");
+    }
+    return parseFloat(text?.replace("Total: $", "").trim());
+  }
+
+  public async getProductPriceFromOverview(
+    productName: string,
+  ): Promise<number> {
+    const productItem = this.page.getByTestId("inventory-item").filter({
+      has: this.page.getByTestId("inventory-item-name").filter({
+        hasText: productName,
+      }),
+    });
+
+    const priceLocator = productItem.getByTestId("inventory-item-price");
+    await priceLocator.waitFor({ state: "visible", timeout: 5000 });
+    const raw = await priceLocator.textContent();
+    if (!raw) {
+      throw new Error("Total price text is missing");
+    }
+    const price = parseFloat(raw?.replace("$", "").trim());
+    return price;
   }
 }

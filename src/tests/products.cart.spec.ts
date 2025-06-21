@@ -11,11 +11,13 @@ test.describe("Verify Add/Remove from card", () => {
     loginPage,
     productsPage,
   }) => {
-    await loginPage.goto(process.env.SAUCE_DEMO_BASEURL ?? "");
+    await loginPage.goto(process.env.SAUCE_DEMO_BASEURL ?? "<unknown>");
     await loginPage.fillUserNameField(
-      process.env.SAUCE_DEMO_STANDARD_USER ?? "",
+      process.env.SAUCE_DEMO_STANDARD_USER ?? "<unknown>",
     );
-    await loginPage.fillPasswordField(process.env.SAUCE_DEMO_PASSWORD ?? "");
+    await loginPage.fillPasswordField(
+      process.env.SAUCE_DEMO_PASSWORD ?? "<unknown>",
+    );
     await loginPage.clickOnLoginButton();
 
     await expect.soft(page).toHaveURL(/.*inventory/);
@@ -24,9 +26,9 @@ test.describe("Verify Add/Remove from card", () => {
       .toContainText(ProductsPageTexts.primaryHeader);
     await expect.soft(productsPage.hamburgerMenu).toBeVisible();
     await expect.soft(productsPage.shoppingCartLink).toBeVisible();
-    await expect(productsPage.shopingCartContainer).not.toContainClass(
-      "visual_failure",
-    );
+    await expect
+      .soft(productsPage.shopingCartContainer)
+      .not.toContainClass("visual_failure");
 
     for (const productId of Object.values(ProductsCartIds)) {
       const addBtn = productsPage.getAddToCartButton(productId);
@@ -60,11 +62,13 @@ test.describe("Verify Add/Remove from card", () => {
     loginPage,
     productsPage,
   }) => {
-    await loginPage.goto(process.env.SAUCE_DEMO_BASEURL ?? "");
+    await loginPage.goto(process.env.SAUCE_DEMO_BASEURL ?? "<unknown>");
     await loginPage.fillUserNameField(
-      process.env.SAUCE_DEMO_PROBLEM_USER ?? "",
+      process.env.SAUCE_DEMO_PROBLEM_USER ?? "<unknown>",
     );
-    await loginPage.fillPasswordField(process.env.SAUCE_DEMO_PASSWORD ?? "");
+    await loginPage.fillPasswordField(
+      process.env.SAUCE_DEMO_PASSWORD ?? "<unknown>",
+    );
     await loginPage.clickOnLoginButton();
 
     await expect.soft(page).toHaveURL(/.*inventory/);
@@ -109,9 +113,13 @@ test.describe("Verify Add/Remove from card", () => {
     loginPage,
     productsPage,
   }) => {
-    await loginPage.goto(process.env.SAUCE_DEMO_BASEURL ?? "");
-    await loginPage.fillUserNameField(process.env.SAUCE_DEMO_ERROR_USER ?? "");
-    await loginPage.fillPasswordField(process.env.SAUCE_DEMO_PASSWORD ?? "");
+    await loginPage.goto(process.env.SAUCE_DEMO_BASEURL ?? "<unknown>");
+    await loginPage.fillUserNameField(
+      process.env.SAUCE_DEMO_ERROR_USER ?? "<unknown>",
+    );
+    await loginPage.fillPasswordField(
+      process.env.SAUCE_DEMO_PASSWORD ?? "<unknown>",
+    );
     await loginPage.clickOnLoginButton();
 
     await expect.soft(page).toHaveURL(/.*inventory/);
@@ -156,9 +164,13 @@ test.describe("Verify Add/Remove from card", () => {
     loginPage,
     productsPage,
   }) => {
-    await loginPage.goto(process.env.SAUCE_DEMO_BASEURL ?? "");
-    await loginPage.fillUserNameField(process.env.SAUCE_DEMO_VISUAL_USER ?? "");
-    await loginPage.fillPasswordField(process.env.SAUCE_DEMO_PASSWORD ?? "");
+    await loginPage.goto(process.env.SAUCE_DEMO_BASEURL ?? "<unknown>");
+    await loginPage.fillUserNameField(
+      process.env.SAUCE_DEMO_VISUAL_USER ?? "<unknown>",
+    );
+    await loginPage.fillPasswordField(
+      process.env.SAUCE_DEMO_PASSWORD ?? "<unknown>",
+    );
     await loginPage.clickOnLoginButton();
 
     await expect.soft(page).toHaveURL(/.*inventory/);

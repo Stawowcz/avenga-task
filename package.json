@@ -10,7 +10,8 @@
     "test:firefox": "npx playwright test --project=Firefox",
     "test:chromium": "npx playwright test --project=Chromium",
     "test:chromium:debug": "npx playwright test --project=Chromium --debug",
-    "test:all": "npx playwright test"
+    "test:all": "npx playwright test",
+    "prettier": "npx prettier --write ."
   },
   "keywords": [],
   "author": "Jakub Stawowczyk",

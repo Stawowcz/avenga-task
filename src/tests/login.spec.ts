@@ -9,11 +9,13 @@ test.describe("Positive scenarios - Authentication by different user", () => {
     productsPage,
     page,
   }) => {
-    await loginPage.goto(process.env.SAUCE_DEMO_BASEURL ?? "");
+    await loginPage.goto(process.env.SAUCE_DEMO_BASEURL ?? "<unknown>");
     await loginPage.fillUserNameField(
-      process.env.SAUCE_DEMO_STANDARD_USER ?? "",
+      process.env.SAUCE_DEMO_STANDARD_USER ?? "<unknown>",
     );
-    await loginPage.fillPasswordField(process.env.SAUCE_DEMO_PASSWORD ?? "");
+    await loginPage.fillPasswordField(
+      process.env.SAUCE_DEMO_PASSWORD ?? "<unknown>",
+    );
     await loginPage.clickOnLoginButton();
 
     await expect.soft(page).toHaveURL(/.*inventory/);
@@ -30,11 +32,13 @@ test.describe("Positive scenarios - Authentication by different user", () => {
     page,
   }) => {
     //here I show that user does not work, this is how I understand it that I need to show where application does not work properly or user is corrupted
-    await loginPage.goto(process.env.SAUCE_DEMO_BASEURL ?? "");
+    await loginPage.goto(process.env.SAUCE_DEMO_BASEURL ?? "<unknown>");
     await loginPage.fillUserNameField(
-      process.env.SAUCE_DEMO_LOCKED_OUT_USER ?? "",
+      process.env.SAUCE_DEMO_LOCKED_OUT_USER ?? "<unknown>",
     );
-    await loginPage.fillPasswordField(process.env.SAUCE_DEMO_PASSWORD ?? "");
+    await loginPage.fillPasswordField(
+      process.env.SAUCE_DEMO_PASSWORD ?? "<unknown>",
+    );
     await loginPage.clickOnLoginButton();
 
     await expect.soft(page).toHaveURL(/.*inventory/);
@@ -49,17 +53,19 @@ test.describe("Positive scenarios - Authentication by different user", () => {
     loginPage,
     productsPage,
   }) => {
-    await loginPage.goto(process.env.SAUCE_DEMO_BASEURL ?? "");
+    await loginPage.goto(process.env.SAUCE_DEMO_BASEURL ?? "<unknown>");
     await loginPage.fillUserNameField(
-      process.env.SAUCE_DEMO_PERFORMACE_GLITCH_USER ?? "",
+      process.env.SAUCE_DEMO_PERFORMACE_GLITCH_USER ?? "<unknown>",
     );
-    await loginPage.fillPasswordField(process.env.SAUCE_DEMO_PASSWORD ?? "");
+    await loginPage.fillPasswordField(
+      process.env.SAUCE_DEMO_PASSWORD ?? "<unknown>",
+    );
     const start = Date.now();
     await loginPage.clickOnLoginButton();
 
-    await expect(productsPage.primaryHeader).toContainText(
-      ProductsPageTexts.primaryHeader,
-    );
+    await expect
+      .soft(productsPage.primaryHeader)
+      .toContainText(ProductsPageTexts.primaryHeader);
     await expect.soft(productsPage.hamburgerMenu).toBeVisible();
     await expect.soft(productsPage.shoppingCartLink).toBeVisible();
     const duration = Date.now() - start;
@@ -71,11 +77,13 @@ test.describe("Negatvie scenarios - Authentication by user with wrong credential
   test("should verify error message by loging by incorrecr username", async ({
     loginPage,
   }) => {
-    await loginPage.goto(process.env.SAUCE_DEMO_BASEURL ?? "");
+    await loginPage.goto(process.env.SAUCE_DEMO_BASEURL ?? "<unknown>");
     await loginPage.fillUserNameField(
-      process.env.SAUCE_DEMO_INCORRECT_USER ?? "",
+      process.env.SAUCE_DEMO_INCORRECT_USER ?? "<unknown>",
     );
-    await loginPage.fillPasswordField(process.env.SAUCE_DEMO_PASSWORD ?? "");
+    await loginPage.fillPasswordField(
+      process.env.SAUCE_DEMO_PASSWORD ?? "<unknown>",
+    );
     await loginPage.clickOnLoginButton();
 
     await expect.soft(loginPage.errorButton).toBeVisible();
@@ -87,12 +95,12 @@ test.describe("Negatvie scenarios - Authentication by user with wrong credential
   test("should verify error message by loging by incorrecr password", async ({
     loginPage,
   }) => {
-    await loginPage.goto(process.env.SAUCE_DEMO_BASEURL ?? "");
+    await loginPage.goto(process.env.SAUCE_DEMO_BASEURL ?? "<unknown>");
     await loginPage.fillUserNameField(
-      process.env.SAUCE_DEMO_STANDARD_USER ?? "",
+      process.env.SAUCE_DEMO_STANDARD_USER ?? "<unknown>",
     );
     await loginPage.fillPasswordField(
-      process.env.SAUCE_DEMO_INCORRECT_PASSWORD ?? "",
+      process.env.SAUCE_DEMO_INCORRECT_PASSWORD ?? "<unknown>",
     );
     await loginPage.clickOnLoginButton();
 
