@@ -1,6 +1,5 @@
-import { test, expect } from "@playwright/test";
-import { LoginPage } from "../pages/login.page";
-import { ProductsPage } from "../pages/product.page";
+import { test } from "../fixtures/fixtures";
+import { expect } from "@playwright/test";
 import {
   ProductsPageTexts,
   ProductsImages,
@@ -10,12 +9,10 @@ import {
 test.describe("Verify proper immage loading for different users", () => {
   test("SHould verify correct images loading on product page - standard user", async ({
     page,
+    loginPage,
+    productsPage,
   }) => {
-    const loginPage = new LoginPage(page);
-    const productsPage = new ProductsPage(page);
-
     await loginPage.goto(process.env.SAUCE_DEMO_BASEURL ?? "");
-
     await loginPage.fillUserNameField(process.env.SAUCE_DEMO_STANDARD_USER!);
     await loginPage.fillPasswordField(process.env.SAUCE_DEMO_PASSWORD!);
     await loginPage.clickOnLoginButton();
@@ -43,18 +40,17 @@ test.describe("Verify proper immage loading for different users", () => {
       const actualSrc = await productsPage
         .getProductImageByAltText(productName)
         .getAttribute("src");
+
       expect.soft(actualSrc).toContain(expectedSrc);
     }
   });
 
   test("should verify correct images loading on product page - problem user --> bug in app dogs", async ({
     page,
+    loginPage,
+    productsPage,
   }) => {
-    const loginPage = new LoginPage(page);
-    const productsPage = new ProductsPage(page);
-
     await loginPage.goto(process.env.SAUCE_DEMO_BASEURL ?? "");
-
     await loginPage.fillUserNameField(
       process.env.SAUCE_DEMO_PROBLEM_USER ?? "",
     );
@@ -84,18 +80,17 @@ test.describe("Verify proper immage loading for different users", () => {
       const actualSrc = await productsPage
         .getProductImageByAltText(productName)
         .getAttribute("src");
+
       expect.soft(actualSrc).toContain(expectedSrc);
     }
   });
 
   test("should verify correct images loading on product page - visual user --> bug in app dog", async ({
     page,
+    loginPage,
+    productsPage,
   }) => {
-    const loginPage = new LoginPage(page);
-    const productsPage = new ProductsPage(page);
-
     await loginPage.goto(process.env.SAUCE_DEMO_BASEURL ?? "");
-
     await loginPage.fillUserNameField(process.env.SAUCE_DEMO_VISUAL_USER!);
     await loginPage.fillPasswordField(process.env.SAUCE_DEMO_PASSWORD!);
     await loginPage.clickOnLoginButton();
@@ -123,6 +118,7 @@ test.describe("Verify proper immage loading for different users", () => {
       const actualSrc = await productsPage
         .getProductImageByAltText(productName)
         .getAttribute("src");
+
       expect.soft(actualSrc).toContain(expectedSrc);
     }
   });

@@ -1,5 +1,6 @@
 import { Locator } from "@playwright/test";
 import { BasePage } from "./base.page";
+import { Page } from "@playwright/test";
 
 export class LoginPage extends BasePage {
   public readonly userNameField: Locator = this.page.getByTestId("username");
